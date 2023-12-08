@@ -15,4 +15,9 @@ class BookUseCase(
     fun addBook(book: Book) {
         bookPort.createBook(book)
     }
+
+    fun reserveBook(title: String) {
+        // to do : vérifier la disponibilité du livre
+        bookPort.reserveBook(title)
+    }
 }
