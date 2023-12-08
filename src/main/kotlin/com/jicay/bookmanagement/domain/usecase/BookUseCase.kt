@@ -12,12 +12,19 @@ class BookUseCase(
         }
     }
 
+    fun getBookByTitle(title: String) : Book {
+        return bookPort.getBookByTitle(title)
+    }
+
     fun addBook(book: Book) {
         bookPort.createBook(book)
     }
 
     fun reserveBook(title: String) {
-        // to do : vérifier la disponibilité du livre
-        bookPort.reserveBook(title)
+        val book = bookPort.getBookByTitle(title)
+
+        if (!book.isReserved) {
+            bookPort.reserveBook(title)
+        }
     }
 }

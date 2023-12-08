@@ -19,6 +19,21 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
             }
     }
 
+    override fun getBookByTitle(title: String): Book {
+        val paramMap = mapOf("title" to title)
+
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT * FROM BOOK WHERE title=:title",
+                paramMap
+        ) { rs, _ ->
+            Book(
+                    name = rs.getString("title"),
+                    author = rs.getString("author"),
+                    isReserved = rs.getBoolean("is_reserved")
+            )
+        } ?: throw NoSuchElementException("Book with title $title not found")
+    }
+
     override fun createBook(book: Book) {
         namedParameterJdbcTemplate
             .update("INSERT INTO BOOK (title, author, is_reserved) values (:title, :author, :isReserved)", mapOf(
@@ -29,6 +44,9 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
     }
 
     override fun reserveBook(title: String) {
-        TODO("Not yet implemented")
+        namedParameterJdbcTemplate
+                .update("UPDATE BOOK SET is_reserved=true WHERE title=:title", mapOf(
+                        "title" to title
+                ))
     }
 }

@@ -19,6 +19,12 @@ class BookController(
     }
 
     @CrossOrigin
+    @GetMapping("/books/{title}")
+    fun getBookByTitle(@PathVariable title : String): BookDTO {
+        return bookUseCase.getBookByTitle(title).toDto()
+    }
+
+    @CrossOrigin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addBook(@RequestBody bookDTO: BookDTO) {
@@ -30,5 +36,4 @@ class BookController(
     fun reserveBook(@PathVariable title : String) {
         bookUseCase.reserveBook(title)
     }
-
 }

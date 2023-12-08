@@ -47,4 +47,5 @@ class BookDTOUseCaseTest {
 
         verify(exactly = 1) { bookPort.createBook(book) }
     }
+
 }
