@@ -59,8 +59,8 @@ class BookStepDefs {
             """
                 ${
                     line.entries.joinToString(separator = ",", prefix = "{", postfix = "}") {
-                        if (it.key == "reserved" && it.value is String) {
-                            """"${it.key}": ${it.value.toString().toBoolean()}"""
+                        if (it.key == "reserved") {
+                            """"${it.key}": ${it.value}"""
                         } else {
                             """"${it.key}": "${it.value}""""
                         }
