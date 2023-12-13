@@ -48,4 +48,18 @@ class BookDTOUseCaseTest {
         verify(exactly = 1) { bookPort.createBook(book) }
     }
 
+    @Test
+    fun `reserve book`() {
+
+        every { bookPort.getBookByTitle("Les Misérables") } answers { Book("Les Misérables", "Victor Hugo", false) }
+
+        every { bookPort.reserveBook("Les Misérables") } answers { nothing }
+
+        val book = Book("Les Misérables", "Victor Hugo")
+
+        bookUseCase.reserveBook(book.name)
+
+        verify(exactly = 1) { bookPort.reserveBook(book.name) }
+    }
+
 }
