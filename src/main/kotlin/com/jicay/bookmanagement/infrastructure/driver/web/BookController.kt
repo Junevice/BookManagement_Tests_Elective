@@ -32,7 +32,7 @@ class BookController(
     }
 
     @CrossOrigin
-    @PutMapping("/books/{title}")
+    @PutMapping("/{title}")
     fun reserveBook(@PathVariable title : String) {
         bookUseCase.reserveBook(title)
     }

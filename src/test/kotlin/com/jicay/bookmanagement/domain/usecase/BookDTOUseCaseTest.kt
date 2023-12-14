@@ -73,6 +73,5 @@ class BookDTOUseCaseTest {
         assertFailure{ bookUseCase.reserveBook(book.name) }
                 .isInstanceOf(NoSuchElementException::class.java)
                 .hasMessage("Book with title ${book.name} not found or already reserved")
-
     }
 }

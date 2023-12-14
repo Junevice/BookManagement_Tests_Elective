@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest
@@ -96,5 +97,19 @@ class BookControllerIT {
         }
 
         verify(exactly = 0) { bookUseCase.addBook(any()) }
+    }
+
+    @Test
+    fun `rest route reserve book`() {
+        justRun { bookUseCase.reserveBook(any()) }
+
+        mockMvc.put("/books/eragon"){
+            contentType = APPLICATION_JSON
+            accept = APPLICATION_JSON
+        }.andExpect {
+            status { isOk() }
+        }
+
+        verify(exactly = 1) { bookUseCase.reserveBook("eragon") }
     }
 }
