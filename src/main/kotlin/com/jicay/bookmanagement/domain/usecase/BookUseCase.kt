@@ -26,5 +26,8 @@ class BookUseCase(
         if (!book.isReserved) {
             bookPort.reserveBook(title)
         }
+        else{
+            throw NoSuchElementException("Book with title $title not found or already reserved")
+        }
     }
 }
