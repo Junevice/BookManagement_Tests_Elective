@@ -16,7 +16,6 @@ class BookUseCase(
         val book = bookPort.getBookByTitle(title)
         if(book!=null){
             return book
-
         } else{
             throw NoSuchElementException("Book with title $title not found")
         }
@@ -34,6 +33,5 @@ class BookUseCase(
         else{
             throw Exception("Book with title $title already reserved")
         }
-
     }
 }
