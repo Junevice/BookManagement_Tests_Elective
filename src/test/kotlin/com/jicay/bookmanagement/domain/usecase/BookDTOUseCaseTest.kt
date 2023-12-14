@@ -66,12 +66,25 @@ class BookDTOUseCaseTest {
     @Test
     fun `error book already reserved`() {
         every { bookPort.getBookByTitle("Les Misérables") } answers { Book("Les Misérables", "Victor Hugo", true) }
-        // every { bookPort.reserveBook("Les Misérables") } answers { nothing }
 
         val book = Book("Les Misérables", "Victor Hugo")
 
         assertFailure{ bookUseCase.reserveBook(book.name) }
-                .isInstanceOf(NoSuchElementException::class.java)
-                .hasMessage("Book with title ${book.name} not found or already reserved")
+
+            .isInstanceOf(Exception::class.java)
+            .hasMessage("Book with title ${book.name} already reserved")
+
+    }
+
+    @Test
+    fun `error book not found`() {
+        every { bookPort.getBookByTitle("Les Misérables") } answers  { throw NoSuchElementException("Book with title Les Misérables not found") }
+
+        val book = Book("Les Misérables", "Victor Hugo")
+
+        assertFailure{ bookUseCase.reserveBook(book.name) }
+            .isInstanceOf(NoSuchElementException::class.java)
+            .hasMessage("Book with title ${book.name} not found")
+
     }
 }

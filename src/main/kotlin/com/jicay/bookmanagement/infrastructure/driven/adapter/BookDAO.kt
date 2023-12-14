@@ -19,7 +19,7 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
             }
     }
 
-    override fun getBookByTitle(title: String): Book {
+    override fun getBookByTitle(title: String): Book? {
         val paramMap = mapOf("title" to title)
 
         return namedParameterJdbcTemplate.queryForObject(
@@ -31,7 +31,7 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
                     author = rs.getString("author"),
                     isReserved = rs.getBoolean("is_reserved")
             )
-        } ?: throw NoSuchElementException("Book with title $title not found")
+        }
     }
 
     override fun createBook(book: Book) {
