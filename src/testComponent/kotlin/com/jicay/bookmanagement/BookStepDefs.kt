@@ -53,6 +53,26 @@ class BookStepDefs {
             .statusCode(200)
     }
 
+    @When("the user reserve the book titled {string}")
+    fun reserveBook(title: String) {
+        given()
+                .contentType(ContentType.JSON)
+                .and()
+                .`when`()
+                .put("/books/${title}")
+                .then()
+                .statusCode(200)
+    }
+
+    @When("the user retrieve the book titled {string}")
+    fun getBookByTitle(title: String) {
+        BookResult = given()
+                .`when`()
+                .get("/books/${title}")
+                .then()
+                .statusCode(200)
+    }
+
     @Then("the list should contains the following books in the same order")
     fun shouldHaveListOfBooks(payload: List<Map<String, Any>>) {
         val expectedResponse = payload.joinToString(separator = ",", prefix = "[", postfix = "]") { line ->
@@ -74,7 +94,14 @@ class BookStepDefs {
 
     }
 
+    @Then("the book reservation status should be {string}")
+    fun bookReservationInfoShouldShowStatus(payload: String) {
+        val expectedResponse = payload.toBoolean()
+        assertThat(BookResult.extract().body().jsonPath().getBoolean("reserved")).isEqualTo(expectedResponse)
+    }
+
     companion object {
         lateinit var lastBookResult: ValidatableResponse
+        lateinit var BookResult: ValidatableResponse
     }
 }

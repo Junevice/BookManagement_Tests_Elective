@@ -34,6 +34,5 @@ class BookUseCase(
         else{
             throw NoSuchElementException("Book with title $title not found")
         }
-
     }
 }
