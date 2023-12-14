@@ -109,6 +109,32 @@ class BookDAOIT {
         assertThat(res[0]["author"]).isEqualTo("Baudelaire")
     }
 
+    @Test
+    fun `get a specific book by title in db`() {
+        // GIVEN
+        performQuery(
+            // language=sql
+            """
+               insert into book (title, author)
+               values 
+                   ('Les fleurs du mal', 'Baudelaire');
+            """.trimIndent())
+
+        // WHEN
+        bookDAO.getBookByTitle("Les fleurs du mal")
+
+        // THEN
+        val res = performQuery(
+            // language=sql
+            "SELECT * from book WHERE title='Les fleurs du mal'"
+        )
+
+        assertThat(res.size).isEqualTo(1)
+        assertThat(res[0]["is_reserved"]).isEqualTo(false)
+        assertThat(res[0]["title"]).isEqualTo("Les fleurs du mal")
+        assertThat(res[0]["author"]).isEqualTo("Baudelaire")
+    }
+
 
 
 
