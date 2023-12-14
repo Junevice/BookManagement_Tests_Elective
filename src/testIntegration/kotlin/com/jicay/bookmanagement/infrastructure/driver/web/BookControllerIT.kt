@@ -103,13 +103,34 @@ class BookControllerIT {
     fun `rest route reserve book`() {
         justRun { bookUseCase.reserveBook(any()) }
 
-        mockMvc.put("/books/eragon"){
-            contentType = APPLICATION_JSON
-            accept = APPLICATION_JSON
-        }.andExpect {
+        mockMvc.put("/books/eragon")
+            .andExpect {
             status { isOk() }
         }
 
         verify(exactly = 1) { bookUseCase.reserveBook("eragon") }
+    }
+
+    @Test
+    fun `rest route get book by title`() {
+        every { bookUseCase.getBookByTitle(any()) } returns Book("A", "B")
+
+        mockMvc.get("/books/A")
+            .andExpect {
+            status { isOk() }
+            content { content { APPLICATION_JSON } }
+            content { json(
+                // language=json
+                """
+                        
+                      {
+                        "name": "A",
+                        "author": "B"
+                      }
+                        
+                    """.trimIndent()
+            ) }
+        }
+        verify(exactly = 1) { bookUseCase.getBookByTitle("A") }
     }
 }
