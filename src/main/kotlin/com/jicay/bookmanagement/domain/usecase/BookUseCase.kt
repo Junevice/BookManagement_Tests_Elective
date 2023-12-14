@@ -12,8 +12,14 @@ class BookUseCase(
         }
     }
 
-    fun getBookByTitle(title: String) : Book? {
-        return bookPort.getBookByTitle(title)
+    fun getBookByTitle(title: String) : Book {
+        val book = bookPort.getBookByTitle(title)
+        if(book!=null){
+            return book
+
+        } else{
+            throw NoSuchElementException("Book with title $title not found")
+        }
     }
 
     fun addBook(book: Book) {
@@ -22,17 +28,12 @@ class BookUseCase(
 
     fun reserveBook(title: String) {
         val book = bookPort.getBookByTitle(title)
-
-        if(book!=null){
-            if (!book.isReserved) {
-                bookPort.reserveBook(title)
-            }
-            else{
-                throw Exception("Book with title $title already reserved")
-            }
+        if (!book!!.isReserved) {
+            bookPort.reserveBook(title)
         }
         else{
-            throw NoSuchElementException("Book with title $title not found")
+            throw Exception("Book with title $title already reserved")
         }
+
     }
 }
