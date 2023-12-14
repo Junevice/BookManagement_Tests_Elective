@@ -19,7 +19,7 @@ class BookController(
     }
 
     @CrossOrigin
-    @GetMapping("/books/{title}")
+    @GetMapping("/{title}")
     fun getBookByTitle(@PathVariable title : String): BookDTO? {
         return bookUseCase.getBookByTitle(title)?.toDto()
     }

@@ -83,6 +83,35 @@ class BookDAOIT {
         assertThat(res[0]["is_reserved"]).isEqualTo(false)
     }
 
+    @Test
+    fun `reserve book in db`() {
+        // GIVEN
+        performQuery(
+            // language=sql
+            """
+               insert into book (title, author)
+               values 
+                   ('Les fleurs du mal', 'Baudelaire');
+            """.trimIndent())
+
+        // WHEN
+        bookDAO.reserveBook("Les fleurs du mal")
+
+        // THEN
+        val res = performQuery(
+            // language=sql
+            "SELECT * from book WHERE title='Les fleurs du mal'"
+        )
+
+        assertThat(res.size).isEqualTo(1)
+        assertThat(res[0]["is_reserved"]).isEqualTo(true)
+        assertThat(res[0]["title"]).isEqualTo("Les fleurs du mal")
+        assertThat(res[0]["author"]).isEqualTo("Baudelaire")
+    }
+
+
+
+
     protected fun performQuery(sql: String): List<Map<String, Any>> {
         val hikariConfig = HikariConfig()
         hikariConfig.setJdbcUrl(postgresqlContainer.jdbcUrl)
