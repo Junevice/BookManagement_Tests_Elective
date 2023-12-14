@@ -87,4 +87,15 @@ class BookDTOUseCaseTest {
             .hasMessage("Book with title ${book.name} not found")
 
     }
+
+    @Test
+    fun `get book by title`() {
+        every { bookPort.getBookByTitle(any()) } answers {Book("Les Misérables", "Victor Hugo")}
+
+        val book = Book("Les Misérables", "Victor Hugo")
+
+        bookUseCase.getBookByTitle(book.name)
+
+        verify(exactly = 1) { bookPort.getBookByTitle(book.name) }
+    }
 }
